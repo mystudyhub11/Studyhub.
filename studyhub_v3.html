@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyHub — Learn. Practice. Improve.</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#172033}
+header{background:#fff;padding:18px 7%;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 12px #0001;position:sticky;top:0;z-index:5}
+.logo{font-size:25px;font-weight:800;color:#5b4bdb}.logo span{color:#172033}
+nav a{margin-left:18px;text-decoration:none;color:#39445a;font-weight:600}
+.hero{padding:65px 7%;text-align:center;background:linear-gradient(135deg,#eeeaff,#fff)}
+.hero h1{font-size:46px;margin:0 0 12px}.hero h1 span{color:#5b4bdb}.hero p{font-size:18px;color:#5f6b80}
+.btn{display:inline-block;margin-top:14px;padding:12px 20px;border-radius:10px;background:#5b4bdb;color:white;text-decoration:none;font-weight:700;border:0;cursor:pointer}
+.section{padding:45px 7%}.section h2{text-align:center;margin-bottom:25px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px}
+.card,.tool{background:#fff;padding:22px;border-radius:16px;box-shadow:0 5px 20px #0001}
+input,select{width:100%;padding:12px;border:1px solid #ddd;border-radius:9px;font-size:16px;margin-bottom:12px}
+.note{display:none}.note.show{display:block}.note h3{margin-bottom:7px}
+.timer{text-align:center}.time{font-size:55px;font-weight:800;margin:15px}.timer button{margin:5px}
+.calc{max-width:420px;margin:auto}.calc-display{font-size:28px;text-align:right;background:#f1f2f7;padding:15px;border-radius:10px;margin-bottom:10px;min-height:62px}
+.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.calc-grid button{padding:16px;border:0;border-radius:8px;font-size:18px;cursor:pointer}
+.quiz{max-width:720px;margin:10px auto 60px;padding:30px;background:#fff;border-radius:18px;box-shadow:0 5px 20px #0001}
+.progress{color:#687386;font-size:14px}.option{display:block;width:100%;padding:13px;margin:10px 0;border:1px solid #ddd;border-radius:9px;background:#fff;text-align:left;cursor:pointer;font-size:16px}.option:disabled{cursor:default}
+.result{font-weight:700;margin-top:15px;font-size:18px}.hidden{display:none}.scorebox{text-align:center;padding:25px;background:#f0edff;border-radius:14px}
+footer{text-align:center;padding:25px;color:#687386}
+@media(max-width:600px){.hero h1{font-size:35px}nav{display:none}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">Study<span>Hub</span> 📚</div>
+<nav><a href="#notes">Notes</a><a href="#quiz">Quiz</a><a href="#timer">Timer</a><a href="#calculator">Calculator</a></nav>
+</header>
+
+<section class="hero">
+<h1>Learn. <span>Practice.</span> Improve.</h1>
+<p>Students ke liye simple aur useful learning hub.</p>
+<a class="btn" href="#quiz">Start Daily Quiz</a>
+</section>
+
+<section class="section" id="notes">
+<h2>📚 Study Notes</h2>
+<input id="search" placeholder="Search notes... (e.g. maths, science)" oninput="searchNotes()">
+<div class="grid">
+<div class="card note show" data-key="math maths algebra"><h3>📐 Algebra Basics</h3><p>Variable, coefficient aur simple equations ko samjho.</p></div>
+<div class="card note show" data-key="science photosynthesis biology"><h3>🌱 Photosynthesis</h3><p>Plants sunlight, water aur carbon dioxide ki help se food banate hain.</p></div>
+<div class="card note show" data-key="english grammar"><h3>✍️ English Grammar</h3><p>Noun, verb, adjective aur sentence basics revise karo.</p></div>
+<div class="card note show" data-key="history india history"><h3>🏛️ Indian History</h3><p>Important historical events ko short notes ke through revise karo.</p></div>
+</div>
+</section>
+
+<section class="section" id="timer">
+<h2>⏱️ Study Timer</h2>
+<div class="tool timer">
+<div class="time" id="time">25:00</div>
+<button class="btn" onclick="startTimer()">Start</button>
+<button class="btn" onclick="pauseTimer()">Pause</button>
+<button class="btn" onclick="resetTimer()">Reset</button>
+<p>25-minute focused study session.</p>
+</div>
+</section>
+
+<section class="section" id="calculator">
+<h2>🧮 Calculator</h2>
+<div class="tool calc">
+<div class="calc-display" id="display">0</div>
+<div class="calc-grid">
+<button onclick="press('7')">7</button><button onclick="press('8')">8</button><button onclick="press('9')">9</button><button onclick="press('/')">÷</button>
+<button onclick="press('4')">4</button><button onclick="press('5')">5</button><button onclick="press('6')">6</button><button onclick="press('*')">×</button>
+<button onclick="press('1')">1</button><button onclick="press('2')">2</button><button onclick="press('3')">3</button><button onclick="press('-')">−</button>
+<button onclick="press('0')">0</button><button onclick="press('.')">.</button><button onclick="calculate()">=</button><button onclick="press('+')">+</button>
+<button onclick="clearCalc()" style="grid-column:span 4">Clear</button>
+</div>
+</div>
+</section>
+
+<section class="quiz" id="quiz">
+<div id="quizBox"><div class="progress" id="progress"></div><h2 id="question"></h2><div id="options"></div><div class="result" id="feedback"></div><button class="btn hidden" id="nextBtn" onclick="nextQuestion()">Next Question →</button></div>
+<div class="scorebox hidden" id="finalBox"><h2>🎉 Quiz Complete!</h2><p id="scoreText"></p><button class="btn" onclick="restartQuiz()">Try Again</button></div>
+</section>
+
+<footer>© 2026 StudyHub — Keep learning 🚀</footer>
+
+<script>
+function searchNotes(){let s=document.getElementById('search').value.toLowerCase();document.querySelectorAll('.note').forEach(n=>n.classList.toggle('show',n.dataset.key.includes(s)))}
+
+let seconds=1500,timer=null;
+function renderTime(){let m=String(Math.floor(seconds/60)).padStart(2,'0'),s=String(seconds%60).padStart(2,'0');document.getElementById('time').textContent=m+':'+s}
+function startTimer(){if(timer)return;timer=setInterval(()=>{if(seconds>0){seconds--;renderTime()}else{clearInterval(timer);timer=null;alert('🎉 Study session complete! Take a short break.')}},1000)}
+function pauseTimer(){clearInterval(timer);timer=null}
+function resetTimer(){pauseTimer();seconds=1500;renderTime()}
+
+let expr='';
+function press(x){expr+=x;document.getElementById('display').textContent=expr}
+function clearCalc(){expr='';document.getElementById('display').textContent='0'}
+function calculate(){try{if(!/^[0-9+\-*/. ]+$/.test(expr))throw 0;expr=String(Function('return '+expr)());document.getElementById('display').textContent=expr}catch(e){document.getElementById('display').textContent='Error';expr=''}}
+
+const questions=[
+{q:'What is 12 × 8?',o:['86','96','108','88'],a:1},
+{q:'Which planet is known as the Red Planet?',o:['Earth','Venus','Mars','Jupiter'],a:2},
+{q:'What is the capital of India?',o:['Mumbai','New Delhi','Jaipur','Kolkata'],a:1},
+{q:'What is 100 ÷ 4?',o:['20','25','30','40'],a:1},
+{q:'Which gas do plants mainly use for photosynthesis?',o:['Oxygen','Nitrogen','Carbon dioxide','Hydrogen'],a:2}];
+let current=0,score=0;
+function loadQuestion(){let q=questions[current];document.getElementById('progress').textContent=`Question ${current+1} of ${questions.length}`;document.getElementById('question').textContent=q.q;document.getElementById('feedback').textContent='';document.getElementById('nextBtn').classList.add('hidden');let box=document.getElementById('options');box.innerHTML='';q.o.forEach((x,i)=>{let b=document.createElement('button');b.className='option';b.textContent=x;b.onclick=()=>answer(i);box.appendChild(b)})}
+function answer(i){let q=questions[current];document.querySelectorAll('.option').forEach(b=>b.disabled=true);let f=document.getElementById('feedback');if(i===q.a){score++;f.textContent='✅ Correct!';f.style.color='green'}else{f.textContent='❌ Correct answer: '+q.o[q.a];f.style.color='crimson'}document.getElementById('nextBtn').classList.remove('hidden')}
+function nextQuestion(){current++;if(current<questions.length)loadQuestion();else{document.getElementById('quizBox').classList.add('hidden');document.getElementById('finalBox').classList.remove('hidden');document.getElementById('scoreText').textContent=`You scored ${score} out of ${questions.length}!`}}
+function restartQuiz(){current=0;score=0;document.getElementById('finalBox').classList.add('hidden');document.getElementById('quizBox').classList.remove('hidden');loadQuestion()}
+loadQuestion();
+</script>
+</body>
+</html>
